@@ -1,0 +1,38 @@
+[project]
+name = "stack-lifecycle"
+version = "0.1.0"
+description = "Docker-stack lifecycle commands (up/down/build) with a native/consumer split"
+requires-python = ">=3.13"
+dependencies = [
+    "bashrun",
+    "pydantic-settings>=2.9.1",
+    "typer>=0.17.4",
+    "pyyaml>=6.0",
+    "pathspec>=1.0.4",
+]
+
+[dependency-groups]
+dev = ["basedpyright>=1.28.0", "ruff>=0.14.11", "pytest>=8.0.0"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project.scripts]
+up = "stack_lifecycle.up:app"
+down = "stack_lifecycle.down:app"
+build = "stack_lifecycle.build_docker:app"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/stack_lifecycle"]
+include = ["src/stack_lifecycle/py.typed"]
+
+[tool.uv.sources]
+bashrun = { git = "https://github.com/outernet-foundation/bashrun.git", rev = "48df0bc08df95a167cc681ae1f9f7ec85df031a3" }
+
+[tool.basedpyright]
+typeCheckingMode = "strict"
+include = ["src", "tests"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
